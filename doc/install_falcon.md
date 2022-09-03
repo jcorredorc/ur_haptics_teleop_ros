@@ -61,7 +61,7 @@ roscd ros_falcon
 sudo cp udev_rules/99-udev-novint.rules /etc/udev/rules.d
 ```
 
-Now you shouldn't need use sudo to test the falcon,
+Now you shouldn't need to use sudo to test the falcon,
 
 ```
 findfalcons 

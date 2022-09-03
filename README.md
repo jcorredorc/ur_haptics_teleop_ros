@@ -8,7 +8,7 @@
 * Ubuntu 2004
 * ROS Noetic
 
-### Install the Falcon
+## Install the Falcon
 
 See how to install and test the Falcon in ROS [here](doc/install_falcon.md)
 
@@ -47,13 +47,23 @@ roslaunch ur3_moveit_config ur3_moveit_planning_execution.launch sim:=true limit
 roslaunch ur3_moveit_config moveit_rviz.launch config:=true
 ```
 
-see the [moveit doc](https://ros-planning.github.io/moveit_tutorials/) 
+see the [moveit doc](https://ros-planning.github.io/moveit_tutorials/) and [UR - ros industrial](https://github.com/ros-industrial/universal_robot)
+
+
+4. Clone this repo and build it
+
+```
+git clone https://github.com/jcorredorc/ur_haptics_teleop_ros.git
+```
+
 
 ## Usage
 
+1. Test a simple pick and place task (see [Edx course](https://www.edx.org/es/course/hello-real-world-with-ros-robot-operating-system))
+
+```
+rosrun ur_haptics_teleop_ros pick_place_test.py
+```
 
 
-
-
-
-
+2. 
