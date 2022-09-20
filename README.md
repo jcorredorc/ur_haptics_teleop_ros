@@ -27,6 +27,12 @@ Follow the instructions [here](https://github.com/ros-industrial/universal_robot
 ```
 git clone --depth 1 --branch melodic-devel https://github.com/ros-industrial/universal_robot.git
 ```
+or 
+
+```
+git clone -b melodic-devel https://github.com/ros-industrial/universal_robot
+```
+
 
 ```
 catkin build
@@ -47,7 +53,7 @@ roslaunch ur3_moveit_config ur3_moveit_planning_execution.launch sim:=true limit
 roslaunch ur3_moveit_config moveit_rviz.launch config:=true
 ```
 
-see the [moveit doc](https://ros-planning.github.io/moveit_tutorials/) and [UR - ros industrial](https://github.com/ros-industrial/universal_robot)
+See the [moveit doc](https://ros-planning.github.io/moveit_tutorials/) and [UR - ros industrial](https://github.com/ros-industrial/universal_robot)
 
 
 4. Clone this repo and build it

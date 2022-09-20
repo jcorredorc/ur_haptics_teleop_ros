@@ -11,7 +11,37 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+
+  #
+  interactive_markers
+  moveit_core
+  moveit_ros_planning
+  moveit_ros_planning_interface
+  moveit_ros_perception
+  rviz_visual_tools
+  moveit_visual_tools
+  pluginlib
+  geometric_shapes
+  pcl_ros
+  pcl_conversions
+  rosbag
+  tf2_ros
+  tf2_eigen
+  tf2_geometry_msgs
+
+  # control_msgs
+  # control_toolbox
+  # geometry_msgs
+  # moveit_msgs
+  # moveit_ros_planning_interface
+  # rosparam_shortcuts
+  # sensor_msgs
+  # std_msgs
+  # std_srvs
+  # tf2_eigen
+  # trajectory_msgs
 )
+find_package(Eigen3 REQUIRED)
 
 # # System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -102,9 +132,35 @@ find_package(catkin REQUIRED COMPONENTS
 # # CATKIN_DEPENDS: catkin_packages dependent projects also need
 # # DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ur_haptics_teleop_ros
-  CATKIN_DEPENDS roscpp rospy std_msgs
+  INCLUDE_DIRS
+  include
+
+  # LIBRARIES ur_haptics_teleop_ros
+  CATKIN_DEPENDS
+  roscpp
+  rospy
+  std_msgs
+
+  moveit_core
+  moveit_visual_tools
+  moveit_ros_planning_interface
+  interactive_markers
+  tf2_geometry_msgs
+
+  # control_msgs
+  # control_toolbox
+  # geometry_msgs
+  # moveit_msgs
+  # moveit_ros_planning_interface
+  # rosparam_shortcuts
+  # sensor_msgs
+  # std_msgs
+  # std_srvs
+  # tf2_eigen
+  # trajectory_msgs
+  DEPENDS
+  EIGEN3
+  system_lib
 
   # DEPENDS system_lib
 )
@@ -117,8 +173,9 @@ catkin_package(
 # # Your package locations should be listed before other locations
 include_directories(
 
-  # include
+  include
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIRS}
 )
 
 # # Declare a C++ library
@@ -135,6 +192,8 @@ include_directories(
 # # With catkin_make all packages are built within a single CMake context
 # # The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/ur_haptics_teleop_ros_node.cpp)
+# add_executable(moveit_cpp_tutorial_node src/moveit_cpp_tutorialcpp)
+add_executable(move_group_interface_tutorial_node src/move_group_interface_tutorial.cpp)
 
 # # Rename C++ executable without prefix
 # # The above recommended prefix causes long target names, the following renames the
@@ -150,6 +209,9 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 # ${catkin_LIBRARIES}
 # )
+target_link_libraries(move_group_interface_tutorial_node
+  ${catkin_LIBRARIES}
+)
 
 # ############
 # # Install ##
