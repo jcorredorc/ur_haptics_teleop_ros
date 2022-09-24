@@ -65,11 +65,34 @@ git clone https://github.com/jcorredorc/ur_haptics_teleop_ros.git
 
 ## Usage
 
-1. Test a simple pick and place task (see [Edx course](https://www.edx.org/es/course/hello-real-world-with-ros-robot-operating-system))
+1. 
+
+```
+rosrun ur_haptics_teleop_ros start_robot_ur3.sh
+```
+
+
+2. 
+
+Test a simple pick and place task (see [Edx course](https://www.edx.org/es/course/hello-real-world-with-ros-robot-operating-system))
 
 ```
 rosrun ur_haptics_teleop_ros pick_place_test.py
 ```
 
 
-2. 
+3. 
+
+Test the move_group interface tutorial in the UR3
+
+```
+rosrun ur_haptics_teleop_ros move_group_interface_tutorial
+```
+
+In Rviz, include in Panels/Add New panel, RvizVisualToolsGui, to navigate through the tutorial. Also include the Marker display and configure the Marker topic to  /rviz_visual_tools
+
+
+4. 
+
+
+
