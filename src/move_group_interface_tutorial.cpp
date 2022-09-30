@@ -531,7 +531,8 @@ int main(int argc, char** argv)
   visual_tools.publishText(text_pose, "Obstacle Goal", rvt::WHITE, rvt::XLARGE);
   visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
-  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window once the plan is complete");
+
+  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window once the plan is complete, attaching objects ..");
 
   // The result may look like this:
   //

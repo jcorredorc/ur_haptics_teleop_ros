@@ -148,11 +148,12 @@ int main(int argc, char** argv)
 
   //======================================================
 
-  // move to star point (izquierda) to goal (derecha)
+  // move to start point (izquierda) to goal (derecha)
   // izquierda x:0.228337 y:0.407855 z:0.435218
   // derecha  x:-0.223485 y:0.401569 z:0.449578
 
-  myQuaternion.setRPY(0, 0, tau / 5);  // tau/4
+  // The following orientations doesn't fount a valid solution: yaw: 0, tau/6,
+  myQuaternion.setRPY(0, 0, tau / 4);  // test with valid Yaw: tau/4; tau/5
   quat_msg = tf2::toMsg(myQuaternion);
   target_pose1.orientation = quat_msg;
   target_pose1.position.x = 0.228337;

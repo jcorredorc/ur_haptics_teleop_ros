@@ -197,6 +197,8 @@ add_executable(move_group_interface_tutorial_node src/move_group_interface_tutor
 add_executable(move_group_pose_goal_node src/move_group_pose_goal.cpp)
 add_executable(move_group_joint_goal_node src/move_group_joint_goal.cpp)
 add_executable(move_group_path_constrain_node src/move_group_path_constrain.cpp)
+add_executable(move_group_cartesian_path_node src/move_group_cartesian_path.cpp)
+add_executable(move_group_adding_objects_node src/move_group_adding_objects.cpp)
 
 # # Rename C++ executable without prefix
 # # The above recommended prefix causes long target names, the following renames the
@@ -225,6 +227,14 @@ target_link_libraries(move_group_joint_goal_node
 )
 
 target_link_libraries(move_group_path_constrain_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(move_group_cartesian_path_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(move_group_adding_objects_node
   ${catkin_LIBRARIES}
 )
 
