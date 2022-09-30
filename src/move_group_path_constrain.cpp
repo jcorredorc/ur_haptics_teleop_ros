@@ -11,10 +11,6 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
-// #include "ros/ros.h"
-// #include "std_msgs/String.h"
-// #include <sstream>
-
 // The circle constant tau = 2*pi. One tau is one rotation in radians.
 const double tau = 2 * M_PI;
 
@@ -193,44 +189,12 @@ int main(int argc, char** argv)
   test_constraints.orientation_constraints.push_back(ocm);
   move_group_interface.setPathConstraints(test_constraints);
 
-  // visual_tools.prompt(
-  //     "Press 'next' in the RvizVisualToolsGui window to continue the demo, Planning Joint Space with constrain");
-
-  // Enforce Planning in Joint Space
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  //
-  // Depending on the planning problem MoveIt chooses between
-  // ``joint space`` and ``cartesian space`` for problem representation.
-  // Setting the group parameter ``enforce_joint_model_state_space:true`` in
-  // the ompl_planning.yaml file enforces the use of ``joint space`` for all plans.
-  //
-  // By default planning requests with orientation path constraints
-  // are sampled in ``cartesian space`` so that invoking IK serves as a
-  // generative sampler.
-  //
-  // By enforcing ``joint space`` the planning process will use rejection
-  // sampling to find valid requests. Please note that this might
-  // increase planning time considerably.
-  //
-  // We will reuse the old goal that we had and plan to it.
-  // Note that this will only work if the current state already
-  // satisfies the path constraints. So we need to set the start
-  // state to a new pose.
-  //
   // derecha  x:-0.223485 y:0.401569 z:0.449578
 
   moveit::core::RobotState start_state(*move_group_interface.getCurrentState());
   geometry_msgs::Pose start_pose2;
   // start_pose2.orientation.w = 1.0;
   start_pose2.orientation = quat_msg;
-  // start_pose2.position.x = 0.45;
-  // start_pose2.position.y = -0.05;
-  // start_pose2.position.z = 0.35;
-  // ______OK__________________________
-  // start_pose2.position.x = 0.45;
-  // start_pose2.position.y = 0.15;  // 0.194331;
-  // start_pose2.position.z = 0.6;   // 0.1;  // 0.0064503;
-  //______________________________________________
   start_pose2.position.x = -0.223485;
   start_pose2.position.y = 0.401569;  // 0.194331;
   start_pose2.position.z = 0.449578;  // 0.1;  // 0.0064503;
@@ -242,24 +206,6 @@ int main(int argc, char** argv)
   // start state that we have just created.
   move_group_interface.setPoseTarget(start_pose2);
   //---------------
-
-  /*
-    // OJOOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!
-    moveit::core::RobotState start_state(*move_group_interface.getCurrentState());
-    geometry_msgs::Pose goal_pose2;
-    // goal_pose2.orientation.w = 1.0;
-    goal_pose2.orientation = quat_msg;
-    goal_pose2.position.x = 0.456344;
-    goal_pose2.position.y = 0.15;
-    goal_pose2.position.z = 0.06;
-    start_state.setFromIK(joint_model_group, target_pose1);
-    move_group_interface.setStartState(target_pose1);
-
-    // Now we will plan to the earlier pose target from the new
-    // start state that we have just created.
-    move_group_interface.setPoseTarget(goal_pose2);
-    //=====================================================
-  */
 
   // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
   // Lets increase the planning time from the default 5 seconds to be sure the planner has enough time to

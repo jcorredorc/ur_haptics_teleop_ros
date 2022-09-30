@@ -62,8 +62,8 @@ int main(int argc, char** argv)
   moveit_visual_tools::MoveItVisualTools visual_tools("base_link");
   // moveit_visual_tools::MoveItVisualTools visual_tools("worle_group_interface.setPlanningTime(10.0)d");
 
-  //   moveit_visual_tools::MoveItVisualTools visual_tools(move_group_node, "base_link", "move_group_tutorial",
-  //                                                       move_group.getRobotModel());
+  // moveit_visual_tools::MoveItVisualTools visual_tools(move_group_node,
+  // "base_link","move_group_tutorial",move_group.getRobotModel());
   visual_tools.deleteAllMarkers();
 
   // Remote control is an introspection tool that allows users to step through a high level script
@@ -96,7 +96,7 @@ int main(int argc, char** argv)
   geometry_msgs::PoseStamped current_pose = move_group_interface.getCurrentPose();
   ROS_INFO("x:%f y:%f z:%f ", current_pose.pose.position.x, current_pose.pose.position.y, current_pose.pose.position.z);
 
-    // Start the demo
+  // Start the demo
   // ^^^^^^^^^^^^^^^^^^^^^^^^^
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to start the demo. Planning to a Pose goal");
 

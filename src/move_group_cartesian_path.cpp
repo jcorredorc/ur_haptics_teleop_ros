@@ -134,17 +134,6 @@ int main(int argc, char** argv)
 
   //=============================================================================
 
-  // quat_msg = tf2::toMsg(myQuaternion);
-  // target_pose1.orientation = quat_msg;
-  // target_pose1.position.x = 0.228337;
-  // target_pose1.position.y = 0.407855;
-  // target_pose1.position.z = 0.435218;
-  // move_group_interface.setPoseTarget(target_pose1);
-  // success = (move_group_interface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-  // ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose start) %s", success ? "" : "FAILED");
-  // move_group_interface.execute(my_plan);
-  // visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
-
   // ................................................................
 
   // UP x:0.363315 y:-0.186520 z:0.517588
@@ -157,9 +146,6 @@ int main(int argc, char** argv)
   start_pose2.position.x = 0.363315;
   start_pose2.position.y = -0.186520;  // 0.194331;
   start_pose2.position.z = 0.517588;   // 0.1;  // 0.0064503;
-  // start_state.setFromIK(joint_model_group, start_pose2);
-  // start_state.setFromIK(joint_model_group, target_pose1);
-  // move_group_interface.setStartState(start_state);
 
   // Now we will plan to the earlier pose target from the new
   // start state that we have just created.

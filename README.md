@@ -83,14 +83,34 @@ rosrun ur_haptics_teleop_ros pick_place_test.py
 
 3. 
 
-Test the move_group interface tutorial in the UR3
+Test the move_group interface tutorial in the UR3.
 
-```
+<!-- ```
 rosrun ur_haptics_teleop_ros move_group_interface_tutorial
-```
+``` -->
 
 In Rviz, include in Panels/Add New panel, RvizVisualToolsGui, to navigate through the tutorial. Also include the Marker display and configure the Marker topic to  /rviz_visual_tools
 
+
+```
+rosrun ur_haptics_teleop_ros move_group_pose_goal_node
+```
+
+```
+rosrun ur_haptics_teleop_ros move_group_joint_goal_node
+```
+
+```
+rosrun ur_haptics_teleop_ros move_group_path_constrain_node
+```
+
+```
+rosrun ur_haptics_teleop_ros move_group_cartesian_path_node
+```
+
+```
+rosrun ur_haptics_teleop_ros move_group_adding_objects_node
+```
 
 4. 
 
