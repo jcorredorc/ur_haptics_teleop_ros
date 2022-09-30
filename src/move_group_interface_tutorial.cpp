@@ -47,6 +47,8 @@
 #include <moveit_msgs/CollisionObject.h>
 
 #include <moveit_visual_tools/moveit_visual_tools.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 // #include "ros/ros.h"
 // #include "std_msgs/String.h"
@@ -129,12 +131,13 @@ int main(int argc, char** argv)
   std::copy(move_group_interface.getJointModelGroupNames().begin(),
             move_group_interface.getJointModelGroupNames().end(), std::ostream_iterator<std::string>(std::cout, ","));
 
+  // We can get the current pose of the end effector position and orientation
   geometry_msgs::PoseStamped current_pose = move_group_interface.getCurrentPose();
   ROS_INFO("x:%f y:%f z:%f ", current_pose.pose.position.x, current_pose.pose.position.y, current_pose.pose.position.z);
 
   // Start the demo
   // ^^^^^^^^^^^^^^^^^^^^^^^^^
-  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to start the demo\n Planning to a Pose goal");
+  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to start the demo. Planning to a Pose goal");
 
   //   .. _move_group_interface-planning-to-pose-goal:
 
@@ -142,15 +145,21 @@ int main(int argc, char** argv)
   //   ^^^^^^^^^^^^^^^^^^^^^^^
   // We can plan a motion for this group to a desired pose for the
   // end-effector.
+  tf2::Quaternion myQuaternion;
+  geometry_msgs::Quaternion quat_msg;
+  myQuaternion.setRPY(0, 0, tau / 4);
+  quat_msg = tf2::toMsg(myQuaternion);
+
   geometry_msgs::Pose target_pose1;
   //   target_pose1.orientation.w = 1.0;
   //   target_pose1.position.x = 0.28;
   //   target_pose1.position.y = -0.2;
   //   target_pose1.position.z = 0.5;
-  target_pose1.orientation.w = 1.0;
+  // target_pose1.orientation.w = 1.0;
+  target_pose1.orientation = quat_msg;
   target_pose1.position.x = 0.2;
-  target_pose1.position.y = -0.2;
-  target_pose1.position.z = 0.3;
+  target_pose1.position.y = 0.15;
+  target_pose1.position.z = 0.6;
   move_group_interface.setPoseTarget(target_pose1);
 
   // Now, we call the planner to compute the plan and visualize it.
@@ -170,21 +179,21 @@ int main(int argc, char** argv)
   visual_tools.publishText(text_pose, "Pose Goal", rvt::WHITE, rvt::XLARGE);
   visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
-  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+  // visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
   // Finally, to execute the trajectory stored in my_plan, you could use the following method call:
   // Note that this can lead to problems if the robot moved in the meanwhile.
   move_group_interface.execute(my_plan);
 
-  //   // Moving to a pose goal
-  //   // ^^^^^^^^^^^^^^^^^^^^^
-  //   //
-  //   // If you do not want to inspect the planned trajectory,
-  //   // the following is a more robust combination of the two-step plan+execute pattern shown above
-  //   // and should be preferred. Note that the pose goal we had set earlier is still active,
-  //   // so the robot will try to move to that goal.
+  // Moving to a pose goal
+  // ^^^^^^^^^^^^^^^^^^^^^
+  //
+  // If you do not want to inspect the planned trajectory,
+  // the following is a more robust combination of the two-step plan+execute pattern shown above
+  // and should be preferred. Note that the pose goal we had set earlier is still active,
+  // so the robot will try to move to that goal.
 
-  //   // move_group_interface.move();
+  // move_group_interface.move();
 
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue Planning join-space goal");
   current_pose = move_group_interface.getCurrentPose();
@@ -209,8 +218,8 @@ int main(int argc, char** argv)
            joint_group_positions[4], joint_group_positions[5]);
 
   // Now, let's modify one of the joints, plan to the new joint space goal and visualize the plan.
-  // joint_group_positions[0] = -tau / 6;  // -1/6 turn in radians
-  joint_group_positions[0] = -tau / 2;  // -1/6 turn in radians
+  // joint_group_positions[0] = -tau / 6;  // -1/6 turn in radians | tau=2pi
+  joint_group_positions[4] = tau / 2;  // tau / 4;  // -1/6 turn in radians
   move_group_interface.setJointValueTarget(joint_group_positions);
 
   // We lower the allowed maximum velocity and acceleration to 5% of their maximum.
@@ -228,19 +237,53 @@ int main(int argc, char** argv)
   visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
   visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
-  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue. Planning with Path Constraints");
+  // visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue. Orientation to PI");
 
-  current_pose = move_group_interface.getCurrentPose();
-  ROS_INFO("x:%f y:%f z:%f ", current_pose.pose.position.x, current_pose.pose.position.y, current_pose.pose.position.z);
-  current_state = move_group_interface.getCurrentState();
-  //
-  // Next get the current set of joint values for the group.
-  current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
-  ROS_INFO("joint[0]: %f | joint[1]: %f | joint[2]: %f | joint[3]: %f | joint[4]: %f | joint[5]: %f",
-           joint_group_positions[0], joint_group_positions[1], joint_group_positions[2], joint_group_positions[3],
-           joint_group_positions[4], joint_group_positions[5]);
+  // Finally, to execute the trajectory stored in my_plan, you could use the following method call:
+  // Note that this can lead to problems if the robot moved in the meanwhile.
+  // move_group_interface.execute(my_plan);
 
-  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo, Path Constrains");
+  // current_pose = move_group_interface.getCurrentPose();
+  // ROS_INFO("x:%f y:%f z:%f ", current_pose.pose.position.x, current_pose.pose.position.y,
+  // current_pose.pose.position.z); current_state = move_group_interface.getCurrentState();
+  // //
+  // // Next get the current set of joint values for the group.
+  // current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
+  // ROS_INFO("joint[0]: %f | joint[1]: %f | joint[2]: %f | joint[3]: %f | joint[4]: %f | joint[5]: %f",
+  //          joint_group_positions[0], joint_group_positions[1], joint_group_positions[2], joint_group_positions[3],
+  //          joint_group_positions[4], joint_group_positions[5]);
+
+  // success = (move_group_interface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  // ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (joint space goal) %s", success ? "" : "FAILED");
+
+  // // ----------------------------------------------------------------------------
+  // // return to the position to meet the next constrain via joint planning
+  // current_state = move_group_interface.getCurrentState();
+  // current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
+  // joint_group_positions[4] = 0;  // -1/6 turn in radians
+  // move_group_interface.setJointValueTarget(joint_group_positions);
+  // // We lower the allowed maximum velocity and acceleration to 5% of their maximum.
+  // // The default values are 10% (0.1).
+  // // Set your preferred defaults in the joint_limits.yaml file of your robot's moveit_config
+  // // or set explicit factors in your code if you need your robot to move faster.
+  // move_group_interface.setMaxVelocityScalingFactor(0.05);
+  // move_group_interface.setMaxAccelerationScalingFactor(0.05);
+
+  // success = (move_group_interface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  // ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (joint space goal) %s", success ? "" : "FAILED");
+  // // Visualize the plan in RViz
+  // visual_tools.deleteAllMarkers();
+  // visual_tools.publishText(text_pose, "Joint Space Goal", rvt::WHITE, rvt::XLARGE);
+  // visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+  // visual_tools.trigger();
+  // visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue. Returnning to the last
+  // orientation");
+
+  // move_group_interface.execute(my_plan);
+
+  visual_tools.prompt(
+      "Press 'next' in the RvizVisualToolsGui window to continue the demo, Creating Path Constrains and joint "
+      "planning");
 
   // Planning with Path Constraints
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -254,19 +297,23 @@ int main(int argc, char** argv)
   // ocm.link_name = "forearm_link"; // upper_arm_link, shoulder_link
   ocm.link_name = "ee_link";  //
   ocm.header.frame_id = "base_link";
-  ocm.orientation.w = 1.0;
+  // myQuaternion.setRPY(0, 0, tau / 4);
+  // quat_msg = tf2::toMsg(myQuaternion);
+  ocm.orientation = quat_msg;
+  // ocm.orientation.w = 1.0;
   ocm.absolute_x_axis_tolerance = 0.1;
   ocm.absolute_y_axis_tolerance = 0.1;
   ocm.absolute_z_axis_tolerance = 0.1;
-  ocm.weight = 1.0;
-  // ocm.weight = 0.4; // near zero less priority
+  // ocm.weight = 1.0;
+  ocm.weight = 0.4;  // near zero less priority
 
   // Now, set it as the path constraint for the group.
   moveit_msgs::Constraints test_constraints;
   test_constraints.orientation_constraints.push_back(ocm);
   move_group_interface.setPathConstraints(test_constraints);
 
-  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo, Planning Joint Space");
+  // visual_tools.prompt(
+  //     "Press 'next' in the RvizVisualToolsGui window to continue the demo, Planning Joint Space with constrain");
 
   // Enforce Planning in Joint Space
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -288,18 +335,47 @@ int main(int argc, char** argv)
   // Note that this will only work if the current state already
   // satisfies the path constraints. So we need to set the start
   // state to a new pose.
+  //
   moveit::core::RobotState start_state(*move_group_interface.getCurrentState());
   geometry_msgs::Pose start_pose2;
-  start_pose2.orientation.w = 1.0;
+  // start_pose2.orientation.w = 1.0;
+  start_pose2.orientation = quat_msg;
+  // start_pose2.position.x = 0.45;
+  // start_pose2.position.y = -0.05;
+  // start_pose2.position.z = 0.35;
+  // ______OK__________________________
+  // start_pose2.position.x = 0.45;
+  // start_pose2.position.y = 0.15;  // 0.194331;
+  // start_pose2.position.z = 0.6;   // 0.1;  // 0.0064503;
+  //______________________________________________
   start_pose2.position.x = 0.45;
-  start_pose2.position.y = -0.05;
-  start_pose2.position.z = 0.35;
+  start_pose2.position.y = 0.15;  // 0.194331;
+  start_pose2.position.z = 0.6;   // 0.1;  // 0.0064503;
   start_state.setFromIK(joint_model_group, start_pose2);
   move_group_interface.setStartState(start_state);
 
   // Now we will plan to the earlier pose target from the new
   // start state that we have just created.
   move_group_interface.setPoseTarget(target_pose1);
+  //---------------
+
+  /*
+    // OJOOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!
+    moveit::core::RobotState start_state(*move_group_interface.getCurrentState());
+    geometry_msgs::Pose goal_pose2;
+    // goal_pose2.orientation.w = 1.0;
+    goal_pose2.orientation = quat_msg;
+    goal_pose2.position.x = 0.456344;
+    goal_pose2.position.y = 0.15;
+    goal_pose2.position.z = 0.06;
+    start_state.setFromIK(joint_model_group, target_pose1);
+    move_group_interface.setStartState(target_pose1);
+
+    // Now we will plan to the earlier pose target from the new
+    // start state that we have just created.
+    move_group_interface.setPoseTarget(goal_pose2);
+    //=====================================================
+  */
 
   // Planning with constraints can be slow because every sample must call an inverse kinematics solver.
   // Lets increase the planning time from the default 5 seconds to be sure the planner has enough time to
@@ -315,12 +391,18 @@ int main(int argc, char** argv)
   visual_tools.publishText(text_pose, "Constrained Goal", rvt::WHITE, rvt::XLARGE);
   visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
-  visual_tools.prompt("next step, Cartesian Path");
+  // visual_tools.prompt("next step, Cartesian Path");
+
+  // move_group_interface.move();
+
+  // Finally, to execute the trajectory stored in my_plan, you could use the following method call:
+  // Note that this can lead to problems if the robot moved in the meanwhile.
+  move_group_interface.execute(my_plan);
 
   // When done with the path constraint be sure to clear it.
   move_group_interface.clearPathConstraints();
 
-  // visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo, Cartesian Path");
+  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo, Cartesian Path");
 
   // Cartesian Paths
   // ^^^^^^^^^^^^^^^
@@ -329,20 +411,23 @@ int main(int argc, char** argv)
   // from the new start state above.  The initial pose (start state) does not
   // need to be added to the waypoint list but adding it can help with visualizations
   std::vector<geometry_msgs::Pose> waypoints;
+  // waypoints.push_back(target_pose1);
   waypoints.push_back(start_pose2);
+  // waypoints.push_back(target_pose1);
 
   geometry_msgs::Pose target_pose3 = start_pose2;
 
-  target_pose3.position.z -= 0.2;
+  double offset = 0.05;
+  target_pose3.position.x -= offset;
   waypoints.push_back(target_pose3);  // down
 
-  target_pose3.position.y -= 0.2;
+  target_pose3.position.z -= offset;
   waypoints.push_back(target_pose3);  // right
 
-  target_pose3.position.z += 0.2;
-  target_pose3.position.y += 0.2;
-  target_pose3.position.x -= 0.2;
-  waypoints.push_back(target_pose3);  // up and left
+  // target_pose3.position.z += offset;
+  // target_pose3.position.y += offset;
+  // target_pose3.position.x -= offset;
+  // waypoints.push_back(target_pose3);  // up and left
 
   // We want the Cartesian path to be interpolated at a resolution of 1 cm
   // which is why we will specify 0.01 as the max step in Cartesian
@@ -352,6 +437,7 @@ int main(int argc, char** argv)
   moveit_msgs::RobotTrajectory trajectory;
   const double jump_threshold = 0.0;
   const double eef_step = 0.01;
+  // const double eef_step = 0.1;
   double fraction = move_group_interface.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
   ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
 
@@ -362,7 +448,6 @@ int main(int argc, char** argv)
   for (std::size_t i = 0; i < waypoints.size(); ++i)
     visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
   visual_tools.trigger();
-  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo, Adding Objects");
 
   // Cartesian motions should often be slow, e.g. when approaching objects. The speed of cartesian
   // plans cannot currently be set through the maxVelocityScalingFactor, but requires you to time
@@ -372,6 +457,8 @@ int main(int argc, char** argv)
   //
   // You can execute a trajectory like this.
   move_group_interface.execute(trajectory);
+
+  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo, Adding Objects");
 
   // Adding objects to the environment
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

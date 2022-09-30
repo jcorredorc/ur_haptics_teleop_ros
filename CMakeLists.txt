@@ -194,6 +194,9 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/ur_haptics_teleop_ros_node.cpp)
 # add_executable(moveit_cpp_tutorial_node src/moveit_cpp_tutorialcpp)
 add_executable(move_group_interface_tutorial_node src/move_group_interface_tutorial.cpp)
+add_executable(move_group_pose_goal_node src/move_group_pose_goal.cpp)
+add_executable(move_group_joint_goal_node src/move_group_joint_goal.cpp)
+add_executable(move_group_path_constrain_node src/move_group_path_constrain.cpp)
 
 # # Rename C++ executable without prefix
 # # The above recommended prefix causes long target names, the following renames the
@@ -210,6 +213,18 @@ add_executable(move_group_interface_tutorial_node src/move_group_interface_tutor
 # ${catkin_LIBRARIES}
 # )
 target_link_libraries(move_group_interface_tutorial_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(move_group_pose_goal_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(move_group_joint_goal_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(move_group_path_constrain_node
   ${catkin_LIBRARIES}
 )
 
