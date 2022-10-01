@@ -76,6 +76,19 @@
   <build_depend>tf2_eigen</build_depend>
   <build_depend>tf2_geometry_msgs</build_depend>
 
+  <!-- para servo .... -->
+  <depend>control_msgs</depend>
+  <depend>control_toolbox</depend>
+  <depend>geometry_msgs</depend>
+  <depend>moveit_msgs</depend>
+<depend>rosparam_shortcuts</depend>
+ <depend>sensor_msgs</depend>
+ <depend>std_srvs</depend>
+ <depend>trajectory_msgs</depend>
+ <depend>moveit_servo</depend>
+
+<!-- fin para servo -->
+
   <!-- <exec_depend>panda_moveit_config</exec_depend> -->
   <exec_depend>ur3_moveit_config</exec_depend>
   <!-- <exec_depend>franka_description</exec_depend> -->

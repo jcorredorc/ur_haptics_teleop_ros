@@ -89,7 +89,7 @@ Test the move_group interface tutorial in the UR3.
 rosrun ur_haptics_teleop_ros move_group_interface_tutorial
 ``` -->
 
-In Rviz, include in Panels/Add New panel, RvizVisualToolsGui, to navigate through the tutorial. Also include the Marker display and configure the Marker topic to  /rviz_visual_tools
+In Rviz, include in Panels/Add New panel, RvizVisualToolsGui, to navigate throughout the tutorial. Also include the Marker display and configure the Marker topic to /rviz_visual_tools
 
 
 ```
@@ -112,7 +112,9 @@ rosrun ur_haptics_teleop_ros move_group_cartesian_path_node
 rosrun ur_haptics_teleop_ros move_group_adding_objects_node
 ```
 
-4. 
+4.  moveit_servo
 
-
+```
+cpp_interface_example.cpp
+```
 

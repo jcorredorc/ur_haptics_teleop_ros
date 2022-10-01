@@ -7,6 +7,7 @@ project(ur_haptics_teleop_ros)
 # # Find catkin macros and libraries
 # # if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 # # is used, also find other catkin packages
+# set(SERVO_LIB_NAME moveit_servo_cpp_api)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -29,19 +30,20 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_eigen
   tf2_geometry_msgs
 
-  # control_msgs
-  # control_toolbox
-  # geometry_msgs
-  # moveit_msgs
-  # moveit_ros_planning_interface
-  # rosparam_shortcuts
-  # sensor_msgs
-  # std_msgs
-  # std_srvs
-  # tf2_eigen
-  # trajectory_msgs
+  control_msgs
+  control_toolbox
+  geometry_msgs
+  moveit_msgs
+  rosparam_shortcuts
+  sensor_msgs
+  std_srvs
+  trajectory_msgs
+  moveit_servo
 )
+find_package(Boost REQUIRED)
 find_package(Eigen3 REQUIRED)
+
+moveit_build_options()
 
 # # System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -135,6 +137,11 @@ catkin_package(
   INCLUDE_DIRS
   include
 
+  LIBRARIES
+
+  # pose_tracking
+  # ${SERVO_LIB_NAME}
+
   # LIBRARIES ur_haptics_teleop_ros
   CATKIN_DEPENDS
   roscpp
@@ -147,17 +154,16 @@ catkin_package(
   interactive_markers
   tf2_geometry_msgs
 
-  # control_msgs
-  # control_toolbox
-  # geometry_msgs
-  # moveit_msgs
-  # moveit_ros_planning_interface
-  # rosparam_shortcuts
-  # sensor_msgs
-  # std_msgs
-  # std_srvs
-  # tf2_eigen
-  # trajectory_msgs
+  control_msgs
+  control_toolbox
+  geometry_msgs
+  moveit_msgs
+  rosparam_shortcuts
+  sensor_msgs
+  std_srvs
+  tf2_eigen
+  trajectory_msgs
+
   DEPENDS
   EIGEN3
   system_lib
@@ -176,17 +182,27 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIR}
 )
 
 # # Declare a C++ library
 # add_library(${PROJECT_NAME}
 # src/${PROJECT_NAME}/ur_haptics_teleop_ros.cpp
 # )
+# add_library(${SERVO_LIB_NAME}
+
+# These files are used to produce differential motion
+# src/collision_check.cpp
+# src/servo_calcs.cpp
+# src/servo.cpp
+# src/low_pass_filter.cpp
+# )
 
 # # Add cmake target dependencies of the library
 # # as an example, code may need to be generated before libraries
 # # either from message generation or dynamic reconfigure
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(${SERVO_LIB_NAME} ${catkin_EXPORTED_TARGETS})
 
 # # Declare a C++ executable
 # # With catkin_make all packages are built within a single CMake context
@@ -199,12 +215,14 @@ add_executable(move_group_joint_goal_node src/move_group_joint_goal.cpp)
 add_executable(move_group_path_constrain_node src/move_group_path_constrain.cpp)
 add_executable(move_group_cartesian_path_node src/move_group_cartesian_path.cpp)
 add_executable(move_group_adding_objects_node src/move_group_adding_objects.cpp)
+add_executable(cpp_interface_example_node src/cpp_interface_example.cpp)
 
 # # Rename C++ executable without prefix
 # # The above recommended prefix causes long target names, the following renames the
 # # target back to the shorter version for ease of user use
 # # e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 # set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
+# set_target_properties(${SERVO_LIB_NAME} PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 
 # # Add cmake target dependencies of the executable
 # # same as for the library above
@@ -236,6 +254,12 @@ target_link_libraries(move_group_cartesian_path_node
 
 target_link_libraries(move_group_adding_objects_node
   ${catkin_LIBRARIES}
+)
+
+target_link_libraries(cpp_interface_example_node
+  ${catkin_LIBRARIES}
+
+  # ${SERVO_LIB_NAME}
 )
 
 # ############
