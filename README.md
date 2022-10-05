@@ -65,7 +65,7 @@ git clone https://github.com/jcorredorc/ur_haptics_teleop_ros.git
 
 ## Usage
 
-1. 
+1. Start the robot simulation, moveit, Gazebo and Rviz
 
 ```
 rosrun ur_haptics_teleop_ros start_robot_ur3.sh
@@ -112,9 +112,25 @@ rosrun ur_haptics_teleop_ros move_group_cartesian_path_node
 rosrun ur_haptics_teleop_ros move_group_adding_objects_node
 ```
 
-4.  moveit_servo
+4.  moveit_servo examples
+
+see the [github site](https://github.com/ros-planning/moveit/tree/master/moveit_ros/moveit_servo)
+
 
 ```
-cpp_interface_example.cpp
+rosrun ur_haptics_teleop_ros start_robot_ur3.sh
 ```
 
+In RViz, grab the red/blue/green “interactive marker” and drag the robot to a non-singular position (not all zero joint angles) that is not close to a joint limit. Click “plan and execute” to move the robot to that pose.
+
+```
+rosservice call /controller_manager/switch_controller "start_controllers: ['joint_group_position_controller']
+stop_controllers: ['arm_controller']
+strictness: 0
+start_asap: false
+timeout: 0.0"
+```
+
+```
+roslaunch ur_haptics_teleop_ros cpp_interface_example.launch
+```

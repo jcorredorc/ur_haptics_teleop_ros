@@ -38,7 +38,7 @@
 # To use the python interface to move_group, import the moveit_commander
 # module.  We also import rospy and some messages that we will use.
 
-# This script was modified from the EDX ROS COURSE to use with the UR3 robot as a test of the moveit_commander
+# This script was modified from the EDX ROS COURSE to use it with the UR3 robot as a test of the moveit_commander
 
 import sys
 import copy
