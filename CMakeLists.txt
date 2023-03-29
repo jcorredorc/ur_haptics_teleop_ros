@@ -135,8 +135,8 @@ moveit_build_options()
 # # DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS
-  include
 
+  # include
   LIBRARIES
 
   # pose_tracking
@@ -166,7 +166,8 @@ catkin_package(
 
   DEPENDS
   EIGEN3
-  system_lib
+
+  # system_lib
 
   # DEPENDS system_lib
 )
@@ -179,7 +180,7 @@ catkin_package(
 # # Your package locations should be listed before other locations
 include_directories(
 
-  include
+  # include
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIR}
