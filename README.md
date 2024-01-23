@@ -38,17 +38,18 @@ git clone -b melodic-devel https://github.com/ros-industrial/universal_robot
 catkin build
 ```
 
-Test the robot UR3
+Test the UR3 robot 
 
 ```
-roslaunch ur_gazebo ur3.launch
+roslaunch ur_gazebo ur3_bringup.launch
 ```
 
 3. Test UR3 with Moveit!
 
 
 ```
-roslaunch ur_gazebo ur3_joint_limited.launch
+<!-- roslaunch ur_gazebo ur3_joint_limited.launch -->
+roslaunch ur_gazebo ur3_bringup.launch
 roslaunch ur3_moveit_config ur3_moveit_planning_execution.launch sim:=true limited:=true
 roslaunch ur3_moveit_config moveit_rviz.launch config:=true
 ```
@@ -134,3 +135,13 @@ timeout: 0.0"
 ```
 roslaunch ur_haptics_teleop_ros cpp_interface_example.launch
 ```
+
+Usign URSim and moveit, get this error
+
+```
+[ERROR] [1680131092.166186633]: Link 'ee_link' not found in model 'ur3_robot'
+[servo_server-1] process has died [pid 149503, exit code -11, cmd /home/javier/catkin_ur/devel/lib/ur_haptics_teleop_ros/cpp_interface_example_node __name:=servo_server __log:=/home/javier/.ros/log/08d99332-ce81-11ed-a66a-a394436df276/servo_server-1.log].
+log file: /home/javier/.ros/log/08d99332-ce81-11ed-a66a-a394436df276/servo_server-1*.log
+```
+
+
