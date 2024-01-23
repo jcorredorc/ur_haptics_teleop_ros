@@ -216,6 +216,7 @@ add_executable(move_group_path_constrain_node src/move_group_path_constrain.cpp)
 add_executable(move_group_cartesian_path_node src/move_group_cartesian_path.cpp)
 add_executable(move_group_adding_objects_node src/move_group_adding_objects.cpp)
 add_executable(cpp_interface_example_node src/cpp_interface_example.cpp)
+add_executable(pose_tracking_example_node src/pose_tracking_example.cpp)
 
 # # Rename C++ executable without prefix
 # # The above recommended prefix causes long target names, the following renames the
@@ -258,9 +259,13 @@ target_link_libraries(move_group_adding_objects_node
 
 target_link_libraries(cpp_interface_example_node
   ${catkin_LIBRARIES}
-
-  # ${SERVO_LIB_NAME}
 )
+
+target_link_libraries(pose_tracking_example_node
+  ${catkin_LIBRARIES}
+)
+
+# ${SERVO_LIB_NAME}
 
 # ############
 # # Install ##

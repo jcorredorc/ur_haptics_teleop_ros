@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="https://ros.org/wiki/xacro">
+  <!-- Here we define the 2 parameters of the macro -->
+  <xacro:macro name="vacuum_gripper" params="prefix connected_to">
+    <!-- Create a fixed joint with a parameterized name. -->
+    <joint name="${prefix}measurement_tool_joint" type="fixed">
+      <!-- The parent link must be read from the robot model it is attached to. -->
+      <parent link="${connected_to}"/>
+      <child link="${prefix}vacuum_gripper"/>
+      <!-- The tool is directly attached to the flange. -->
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+    <link name="${prefix}vacuum_gripper">
+      <visual>
+        <geometry>
+          <!-- The path to the visual meshes in the package. -->
+          <!-- <mesh filename="package://ur5_with_measurement_tool/meshes/visual/vacuum_gripper.stl"/> -->
+          <cylinder length="0.06" radius="0.03"/> 
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <!-- The path to the collision meshes in the package. -->
+          <!-- <mesh filename="package://ur5_with_measurement_tool/meshes/collision/vacuum_gripper.stl"/> -->
+          <cylinder length="0.06" radius="0.03"/> 
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- TCP frame -->
+    <joint name="${prefix}tcp_joint" type="fixed">
+      <origin xyz="0 0 0.116" rpy="0 0 0"/>
+      <parent link="${prefix}vacuum_gripper"/>
+      <child link="${prefix}tcp"/>
+    </joint>
+    <link name="${prefix}tcp"/>
+
+  </xacro:macro>
+</robot>

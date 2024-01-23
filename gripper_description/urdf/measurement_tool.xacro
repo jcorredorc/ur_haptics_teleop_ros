@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="https://ros.org/wiki/xacro">
+  <!-- Here we define the 2 parameters of the macro -->
+  <xacro:macro name="measurement_tool" params="prefix connected_to">
+    <!-- Create a fixed joint with a parameterized name. -->
+    <joint name="${prefix}measurement_tool_joint" type="fixed">
+      <!-- The parent link must be read from the robot model it is attached to. -->
+      <parent link="${connected_to}"/>
+      <child link="${prefix}measurement_tool"/>
+      <!-- The tool is directly attached to the flange. -->
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+    <link name="${prefix}measurement_tool">
+      <visual>
+        <geometry>
+          <!-- The path to the visual meshes in the package. -->
+          <!-- <mesh filename="package://ur5_with_measurement_tool/meshes/visual/measurement_tool.stl"/> -->
+          <cylinder length="0.6" radius="0.3"/> 
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <!-- The path to the collision meshes in the package. -->
+          <!-- <mesh filename="package://ur5_with_measurement_tool/meshes/collision/measurement_tool.stl"/> -->
+          <cylinder length="0.6" radius="0.3"/> 
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- TCP frame -->
+    <joint name="${prefix}tcp_joint" type="fixed">
+      <origin xyz="0 0 0.116" rpy="0 0 0"/>
+      <parent link="${prefix}measurement_tool"/>
+      <child link="${prefix}tcp"/>
+    </joint>
+    <link name="${prefix}tcp"/>
+
+  </xacro:macro>
+</robot>

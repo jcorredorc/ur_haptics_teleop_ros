@@ -1,0 +1,12 @@
+<launch>
+  <!-- Launch an example that sends commands via C++ API. -->
+
+  <node name="servo_server" pkg="moveit_servo" type="pose_tracking_example" output="screen" >
+    <!-- <param name="parameter_ns" type="string" value="servo_server" /> -->
+    <rosparam command="load" file="$(find ur_haptics_teleop_ros)/config/ur_simulated_config.yaml" />
+    <!-- <group ns="/servo_server/optional_parameter_namespace"> -->
+    <rosparam command="load" file="$(find ur_haptics_teleop_ros)/config/pose_tracking_settings.yaml"/>
+    <!-- </group> -->
+  </node>
+
+</launch>

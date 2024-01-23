@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="https://ros.org/wiki/xacro" name="ur3_with_vacuum_gripper">
+
+  <!-- Ur3 -->
+  <xacro:include filename="$(find ur_description)/urdf/ur3.urdf.xacro" />
+  <!-- end-effector -->
+  <xacro:include filename="vacuum_gripper.xacro" />
+
+  <!-- Ur3 -->
+  <!-- The Ur3 xacro must be included with passing parameters -->
+  <xacro:ur3_robot prefix="" joint_limited="true"/>
+  <!-- end-effector -->
+  <!-- Here we include the end-effector by setting the parameters -->
+  <!-- TODO: check end-effector link name of robot -->
+  <xacro:vacuum_gripper prefix="" connected_to="tool0"/>
+
+  <!-- define the Ur3's position and orientation in the world coordinate system -->
+  <link name="world" />
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link="base_link" /> <!-- TODO: check base_link name of robot -->
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+</robot>
